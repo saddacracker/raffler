@@ -1,0 +1,54 @@
+<h1>Raffler</h1>
+
+<!-- Directive -->
+<superman yell enter="highlighter" leave></superman>
+
+
+<div ng-controller="RaffleCtrl">
+  <form ng-submit="addEntry()">
+    <input type="text" ng-model="newEntry.name">
+    <input type="submit" value="Add">
+  </form> 
+  
+  <ul>
+    <li ng-repeat="entry in entries">
+        {{entry.name}}
+        <span ng-show="entry.winner" ng-class="{highlight: entry == lastWinner}" class="winner">WINNER</span>
+    </li>
+  </ul>
+  
+  <button ng-click="drawWinner()">Draw Winner</button>
+</div>
+
+<hr />
+
+<div ng-controller="SimpleCtrl">
+  <input type="text" ng-model="data.message">
+  <h2>{{data.message | reverse}}</h2>
+</div>
+
+<hr />
+
+<div ng-controller="SimpleCurrencyCtrl">
+  <h2>Invoice Thingie</h2>
+  <table>
+    <tr>
+      <td><input type="number" ng-pattern="/\d+/" step="1" min="0" ng-model="qty" placeholder="Enter Amount" required/></td>
+      <td><input type="number" ng-model="cost" placeholder="$" required/></td>
+    </tr>
+  </table>
+  <strong>Total: </strong> {{ qty * cost | currency }}
+</div>
+
+<hr />
+
+<div ng-controller="AvengersCtrl">
+  <a href="https://egghead.io/lessons/angularjs-ngrepeat-and-filtering-data" target="_blank"><h2>ng-repeat and filtering data</h2></a>
+  <input type="text" ng-model="search.$" placeholder="search" />
+  <table>
+    <tr ng-repeat="actor in avengers.cast | limitTo:'4' | orderBy:'name' | filter:search">
+      <td>{{actor.name}}</td>
+      <td>{{actor.character | uppercase}}</td>
+    </tr>
+  </table>
+</div>
