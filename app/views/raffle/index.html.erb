@@ -94,3 +94,17 @@
       <phone dial="callHome(message)"></phone>
   </div>
 </div>
+
+<hr />
+
+
+<h2>Zippy</h2>
+<p>Use a directive to create a show/hide</p>
+<input type="text" placeholder="Enter a title" ng-model="model.title">
+<input type="text" placeholder="Enter some content" ng-model="model.content">
+
+<zippy title="{{model.title}}">
+    The content is: {{model.content}}
+</zippy>
+
+<hr />

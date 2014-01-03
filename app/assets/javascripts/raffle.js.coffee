@@ -195,3 +195,18 @@ app.directive "phone", () ->
       dial: "&"
   template: '<input type="text" ng-model="value">' +
     '<div class="button" ng-click="dial({message:value})">Call home!</div>'
+      
+
+# Zippy (Show/Hide Mechanism) -------------------------------------------------      
+app.directive "zippy", () ->
+  restrict: "E"
+  transclude: true
+  scope:
+      title: "@" # maps to attribute
+  
+  template: '<div>\n  <h3 ng-click="toggleContent()">{{title}}</h3>\n  <div ng-show="isContentVisible" ng-transclude></div>\n<div>',
+  link: (scope) ->
+      scope.isContentVisible = false
+
+      scope.toggleContent = () ->
+          scope.isContentVisible = !scope.isContentVisible;
