@@ -1,4 +1,4 @@
-app = angular.module("Raffler", ["ngResource"])
+app = angular.module("Raffler", ["ngResource", "ngRoute"])
 
 # Directives
 app.directive "superman", () ->
@@ -204,7 +204,7 @@ app.directive "zippy", () ->
   scope:
       title: "@" # maps to attribute
   
-  template: '<div>\n  <h3 ng-click="toggleContent()">{{title}}</h3>\n  <div ng-show="isContentVisible" ng-transclude></div>\n<div>',
+  templateUrl: 'zippy.html.erb'
   link: (scope) ->
       scope.isContentVisible = false
 
