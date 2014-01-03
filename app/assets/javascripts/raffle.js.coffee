@@ -28,12 +28,62 @@ app.directive "leave", () ->
       element.removeClass(attrs.enter) # fetch attribute if 'enter' directive
       console.log("Killing " + attrs.enter + " class")
 
+# Directive to Controller communication
+app.directive "click", () ->
+  # defaults to 'A' if restrict not specified
+  (scope, element, attrs) ->
+    element.bind "mousedown", () ->
+      # get function name from 'enter' attribute
+      scope.$apply(attrs.click)
+
+
+# Directive to Directive communication
+app.directive "grossdude", () ->
+  return {
+    restrict: "E",
+    scope:{},
+    controller: ($scope)->
+      $scope.abilities = [] #store our superhero's abilities
+      @addNosePicking = ()->
+        $scope.abilities.push("Nose Picking")
+      @addFarting = ()->
+        $scope.abilities.push("Farting")
+      @addBurping = ()->
+        $scope.abilities.push("Burping")
+
+    link: (scope, element) ->
+      element.addClass("button")
+      element.bind "mousedown", () ->
+         console.log(scope.abilities)
+  }
+       
+
+# app.directive "nosepicking", () ->
+#   return {
+#     require: "grossdude"
+#     link: (scope, element, attrs, grossdudeCtrl)->
+#       grossdudeCtrl.addNosePicking()
+#   }
+#   
+# app.directive "farting", () ->
+#   require: "grossdude"
+#   link: (scope, element, attrs, grossdudeCtrl) ->
+#     grossdudeCtrl.addFarting()
+#   
+# app.directive "burping", () ->
+#   require: "grossdude"
+#   link: (scope, element, attrs, grossdudeCtrl) ->
+#     grossdudeCtrl.addBurping()
+  
+
+  
+  
 # Filters 
 app.filter "reverse", (SampleData) ->
   (text) ->
      text.split("").reverse().join("") + " : " + SampleData.message
 
-# Create a resource to pass into RaffleCtrl
+# Factories
 app.factory "Entry", ($resource) ->
   $resource("/entries/:id.json", {id: "@id"}, {update: {method: "PUT"}})
   
@@ -63,6 +113,12 @@ app.factory "Avengers", () ->
     # add the entry to our list
     $scope.entries.push(entry)
     $scope.newEntry = {}
+  
+  $scope.removeEntry = (index) ->
+    Entry.remove({id: $scope.entries[index].id}, () ->
+      # If successful, remove it from our collection
+      $scope.entries.splice(index, 1);
+    )
     
   $scope.drawWinner = ->
     pool = []
@@ -87,7 +143,55 @@ app.factory "Avengers", () ->
     message.split("").reverse().join("")
   
 @SimpleCurrencyCtrl = ($scope) ->
+  $scope.loadMoreTweets = () ->
+    alert("Loading Tweets From SimpleCurrencyCtrl")
   
 @AvengersCtrl = ($scope, Avengers) ->
   $scope.avengers = Avengers
+  $scope.loadMoreTweets = () ->
+    alert("Loading Tweets From AvengersCtrl")
+
+
+# Directive (Isolate Scope) -------------------------------------------------
+
+# Controller
+@ChoreCtrl = ($scope) -> 
+  $scope.logChore = (chore) ->
+    alert(chore + " is done!")
+    
+# Directive
+app.directive "kid", () ->
+  restrict: "E"
+  scope:
+    totesdone: "&"
+  template: '<input type="text" ng-model="chore">' +
+    ' {{chore}}' +
+    ' <div class="button" ng-click="totesdone({chore:chore})">I\'m done!</div><br />'
+      
+
+
+# Directive (Isolate Scope @) -------------------------------------------------
+
+@DrinkCtrl = ($scope) ->
+  $scope.ctrlFlavor = "blackberry"
+  $scope.ctrlColor = "blue"
+
+app.directive "drink", () ->
+  restrict: "E"
+  scope:
+      flavor: "@" # maps to attribute
+      color: "@" # maps to attribute
+  template: '<div>{{flavor}} <small>{{color}}</small></div>'
   
+
+# Directive (Isolate Scope &) -------------------------------------------------
+@CallHomeCtrl = ($scope) ->
+  $scope.callHome = (message) ->
+    alert(message)
+
+app.directive "phone", () ->
+  restrict: "E"
+  scope: 
+      dial: "&"
+  template: '<input type="text" ng-model="value">' +
+    '<div class="button" ng-click="dial({message:value})">Call home!</div>'

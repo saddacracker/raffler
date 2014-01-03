@@ -3,6 +3,13 @@
 <!-- Directive -->
 <superman yell enter="highlighter" leave></superman>
 
+<!-- Directive to Directive Communication -->
+<br />
+<grossdude burping>Gross</grossdude>
+<grossdude farting burping>Grosser</grossdude>
+<grossdude nosepicking farting burping>Grossest</grossdude>
+
+<hr />
 
 <div ng-controller="RaffleCtrl">
   <form ng-submit="addEntry()">
@@ -14,6 +21,7 @@
     <li ng-repeat="entry in entries">
         {{entry.name}}
         <span ng-show="entry.winner" ng-class="{highlight: entry == lastWinner}" class="winner">WINNER</span>
+        <span><a ng-click="removeEntry($index)">Delete</a></span>
     </li>
   </ul>
   
@@ -38,6 +46,9 @@
     </tr>
   </table>
   <strong>Total: </strong> {{ qty * cost | currency }}
+  <br />
+  <!-- Directive to controller communication -->
+  <div click="loadMoreTweets()">LOAD TWEETS</div>
 </div>
 
 <hr />
@@ -51,4 +62,35 @@
       <td>{{actor.character | uppercase}}</td>
     </tr>
   </table>
+  <br />
+  <!-- Directive to controller communication -->
+  <div click="loadMoreTweets()">LOAD TWEETS</div>
+</div>
+
+<hr />
+
+<div ng-controller="ChoreCtrl">
+  <kid totesdone="logChore(chore)"></kid>
+  <kid totesdone="logChore(chore)"></kid>
+</div>
+
+<hr />
+
+<h2>Isolate @</h2>
+<div ng-controller="DrinkCtrl">
+  <input type="text" ng-model="ctrlFlavor">
+  <input type="text" ng-model="ctrlColor">
+  <drink flavor="{{ctrlFlavor}}" color="{{ctrlColor}}"></drink>
+</div>
+
+<hr />
+
+<h2>Isolate &amp;</h2>
+<p>Communicate with a controller through a directive</p>
+<div ng-app="phoneApp">
+  <div ng-controller="CallHomeCtrl">
+      <phone dial="callHome(message)"></phone>
+      <phone dial="callHome(message)"></phone>
+      <phone dial="callHome(message)"></phone>
+  </div>
 </div>
