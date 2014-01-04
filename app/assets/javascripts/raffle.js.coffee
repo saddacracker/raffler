@@ -124,6 +124,16 @@ app.factory "Avengers", () ->
   return Avengers
 
 # Setting Up The Root View to Handle Errors -------------------------------------------------
+
+# show error in ui
+app.directive "error", ($rootScope) ->
+  restrict: "E"
+  template: '<div class="alert-box alert" ng-show="isError">Error!!!!</div>'
+  link: (scope) ->
+    $rootScope.$on "$routeChangeError", (event, current, previous, rejection) ->
+        scope.isError = true
+
+# main controller
 app.controller "AppCtrl", ($rootScope) ->
   # handle if the promise to teh router wasn't fulfilled
   $rootScope.$on "$routeChangeError", (event, current, previous, rejection) ->
@@ -136,6 +146,7 @@ viewCtrl = app.controller "ViewCtrl", ($scope, $route) ->
   }
   return $scope.ViewCtrl = this;
 
+# make this method accessable
 viewCtrl.loadData = ($q, $timeout) ->
   defer = $q.defer()
   $timeout () ->
