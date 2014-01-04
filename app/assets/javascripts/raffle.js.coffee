@@ -2,7 +2,15 @@ app = angular.module("Raffler", ["ngResource", "ngRoute"])
 
 # Routes
 app.config ($routeProvider) ->
-  $routeProvider.when( '/testickle',
+  $routeProvider
+  .when('/',
+    templateUrl: "/assets/templates/raffle/app.html",
+    controller: "ViewCtrl",
+    resolve:
+      # this has to be resolved before loading
+      loadData: viewCtrl.loadData 
+  )
+  .when( '/testickle',
     templateUrl: "/assets/templates/raffle/tickle.html"
     controller: "TestTickleCtrl"
   ).when( '/pizza',
@@ -115,8 +123,31 @@ app.factory "Avengers", () ->
   ]
   return Avengers
 
-# @ makes it accessible outside this file
-# ng-View -------------------------------------------------           
+# Setting Up The Root View to Handle Errors -------------------------------------------------
+app.controller "AppCtrl", ($rootScope) ->
+  # handle if the promise to teh router wasn't fulfilled
+  $rootScope.$on "$routeChangeError", (event, current, previous, rejection) ->
+    console.log(rejection)
+
+viewCtrl = app.controller "ViewCtrl", ($scope, $route) ->
+  console.log($route);
+  this.model = {
+    message: "I'm a great app!"
+  }
+  return $scope.ViewCtrl = this;
+
+viewCtrl.loadData = ($q, $timeout) ->
+  defer = $q.defer()
+  $timeout () ->
+    # resolve/reject
+    defer.reject "YOU WERE REJECTED", 500
+  return defer.promise
+
+# End Setting Up The Root View to Handle Errors -------------------------------------------------
+  
+
+# ng-View ------------------------------------------------- 
+# @ makes it accessible outside this file          
 @TestTickleCtrl = ($scope) ->
   this.model = {
       message: "Welcome! Get your tests tickled!"
