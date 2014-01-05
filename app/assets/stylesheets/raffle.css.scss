@@ -1,3 +1,15 @@
+.header {
+  display: block;
+  padding: 5px 20px;
+  color: #222;
+  background: #f9cb0c;
+  h1 {
+    text-transform: uppercase;
+    font-weight: bold; 
+    line-height: 1em;
+    font-family: sans-serif;
+  }
+}
 .winner {
   color: #999999;
   font-size: .6em;

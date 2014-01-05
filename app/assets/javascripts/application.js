@@ -13,4 +13,8 @@
 //= require angular
 //= require angular-resource
 //= require angular-route
+// 
+// ORDER IS IMPORTANT HERE
+//= require ng/_raffler
+//= require ng/_config
 //= require_tree .

@@ -1,0 +1,1 @@
+# No controller here. Just a static view

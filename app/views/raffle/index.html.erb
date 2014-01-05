@@ -1,5 +1,7 @@
-<h1>Angular Practice</h1>
-
-<!-- view -->
-<error></error>
-<ng-view></ng-view>
+<!-- Put a controller on the app so you can handle routing errors -->
+<!-- https://egghead.io/lessons/angularjs-resolve-routechangeerror -->
+<div ng-app="Raffler" ng-controller="AppCtrl">
+  <header class="header"><h1>Angular Practice</h1></header>
+  <error></error>
+  <ng-view></ng-view>
+</div>
